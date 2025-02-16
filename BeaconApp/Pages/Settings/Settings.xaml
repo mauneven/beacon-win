@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="beacon.BeaconApp.Pages.Settings.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:beacon.BeaconApp.Pages.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+        <TextBlock x:Uid="SelectLanguage" FontSize="20" />
+
+        <!-- Language selection buttons -->
+        <Button Content="English" Tag="en-US" Click="ChangeLanguage_Click"/>
+        <Button Content="Español" Tag="es-ES" Click="ChangeLanguage_Click"/>
+        <Button Content="Français" Tag="fr-FR" Click="ChangeLanguage_Click"/>
+
+        <!-- Navigation button to Main or Home -->
+        <Button x:Uid="GoToHome" Click="GoToMain_Click"/>
+    </StackPanel>
+</Page>

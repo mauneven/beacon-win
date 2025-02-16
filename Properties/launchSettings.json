@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "beacon (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "beacon (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
