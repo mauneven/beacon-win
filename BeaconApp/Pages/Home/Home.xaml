@@ -6,12 +6,72 @@
     xmlns:local="using:beacon.BeaconApp.Pages.Home"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    mc:Ignorable="d">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Home" Margin="0,0,0,10"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+            <Grid HorizontalAlignment="left" RowSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Beacon Reminders" Margin="0,0,0,10" FontSize="20" MaxWidth="200" VerticalAlignment="Center"/>
+                <ToggleSwitch x:Name="toggleReminders"
+                              Grid.Column="1"
+                              Toggled="ToggleReminders_Toggled"
+                              OnContent=""
+                              OffContent=""/>
+            </Grid>
+
+            <!-- Reminder: Drink water -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="Drink water" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Slider x:Name="sliderDrinkWater" Minimum="1" Maximum="120" Value="10" TickFrequency="10" TickPlacement="Outside" SnapsTo="StepValues" Width="250"/>
+                    <TextBlock x:Name="textDrinkWater" MinWidth="30" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="chkDrinkWater" IsChecked="True" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Reminder: Stretch your hands -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="Stretch your hands" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Slider x:Name="sliderStretchHands" Minimum="1" Maximum="120" Value="10" TickFrequency="10" TickPlacement="Outside" SnapsTo="StepValues" Width="250"/>
+                    <TextBlock x:Name="textStretchHands" MinWidth="30" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="chkStretchHands" IsChecked="True" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Reminder: Stretch your legs -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="Stretch your legs" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Slider x:Name="sliderStretchLegs" Minimum="1" Maximum="120" Value="10" TickFrequency="10" TickPlacement="Outside" SnapsTo="StepValues" Width="250"/>
+                    <TextBlock x:Name="textStretchLegs" MinWidth="30" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="chkStretchLegs" IsChecked="True" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Reminder: Relax your eyes -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="Relax your eyes" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Slider x:Name="sliderRelaxEyes" Minimum="1" Maximum="120" Value="10" TickFrequency="10" TickPlacement="Outside" SnapsTo="StepValues" Width="250"/>
+                    <TextBlock x:Name="textRelaxEyes" MinWidth="30" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="chkRelaxEyes" IsChecked="True" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Reminder: Sit properly -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="Sit properly" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Slider x:Name="sliderSitProperly" Minimum="1" Maximum="120" Value="10" TickFrequency="10" TickPlacement="Outside" SnapsTo="StepValues" Width="250"/>
+                    <TextBlock x:Name="textSitProperly" MinWidth="30" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="chkSitProperly" IsChecked="True" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
             <Button x:Name="btnSettings" Content="Go to Settings" Click="GoToSettings_Click"/>
         </StackPanel>
     </Grid>

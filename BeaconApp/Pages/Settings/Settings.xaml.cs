@@ -20,7 +20,6 @@ namespace beacon.BeaconApp.Pages.Settings
 
             if (App.CurrentMainWindow is not null)
             {
-                App.CurrentMainWindow.MainFrame.Navigate(typeof(beacon.BeaconApp.Pages.Settings.Settings));
                 Microsoft.Windows.AppLifecycle.AppInstance.Restart("");
             }
         }

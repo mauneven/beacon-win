@@ -8,8 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="beacon">
-
     <Grid>
-        <Frame x:Name="MainFrame" x:FieldModifier="public"/>
+        <Frame x:Name="MainFrame"/>
     </Grid>
 </Window>

@@ -16,6 +16,7 @@ namespace beacon
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
+            m_window.ExtendsContentIntoTitleBar = true;
             CurrentMainWindow = m_window as MainWindow;
             m_window.Activate();
         }
