@@ -1,7 +1,6 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Windows.Storage;
@@ -11,7 +10,6 @@ namespace beacon.BeaconApp.Pages.Home
     public sealed partial class Home : Page
     {
         private DispatcherTimer timerCheckReminders;
-
         private DateTime nextDrinkWaterTime;
         DateTime nextStretchHandsTime;
         DateTime nextStretchLegsTime;
@@ -124,7 +122,6 @@ namespace beacon.BeaconApp.Pages.Home
                 ApplicationData.Current.LocalSettings.Values["chkSitProperly"] = false;
             };
 
-            // Configurar el estado inicial de habilitación de los controles basado en el toggle general.
             sliderDrinkWater.IsEnabled = toggleReminders.IsOn && (chkDrinkWater.IsChecked == true);
             sliderStretchHands.IsEnabled = toggleReminders.IsOn && (chkStretchHands.IsChecked == true);
             sliderStretchLegs.IsEnabled = toggleReminders.IsOn && (chkStretchLegs.IsChecked == true);
@@ -138,14 +135,12 @@ namespace beacon.BeaconApp.Pages.Home
             chkSitProperly.IsEnabled = toggleReminders.IsOn;
 
             ToggleReminders_Toggled(toggleReminders, null);
-
             StartTimers();
         }
 
         private void LoadSettings()
         {
             var localSettings = ApplicationData.Current.LocalSettings;
-
             if (localSettings.Values["sliderDrinkWater"] != null)
                 sliderDrinkWater.Value = Convert.ToDouble(localSettings.Values["sliderDrinkWater"]);
             if (localSettings.Values["sliderStretchHands"] != null)
@@ -215,35 +210,51 @@ namespace beacon.BeaconApp.Pages.Home
         private void TimerCheckReminders_Tick(object sender, object e)
         {
             var now = DateTime.Now;
-
             if (toggleReminders.IsOn)
             {
                 if (chkDrinkWater.IsChecked == true && now >= nextDrinkWaterTime)
                 {
-                    ShowNotification("Drink water");
+                    ShowNotification("DrinkWater");
                     nextDrinkWaterTime = now.AddMinutes(sliderDrinkWater.Value);
                 }
                 if (chkStretchHands.IsChecked == true && now >= nextStretchHandsTime)
                 {
-                    ShowNotification("Stretch your hands");
+                    ShowNotification("StretchHands");
                     nextStretchHandsTime = now.AddMinutes(sliderStretchHands.Value);
                 }
                 if (chkStretchLegs.IsChecked == true && now >= nextStretchLegsTime)
                 {
-                    ShowNotification("Stretch your legs");
+                    ShowNotification("StretchLegs");
                     nextStretchLegsTime = now.AddMinutes(sliderStretchLegs.Value);
                 }
                 if (chkRelaxEyes.IsChecked == true && now >= nextRelaxEyesTime)
                 {
-                    ShowNotification("Relax your eyes");
+                    ShowNotification("RelaxEyes");
                     nextRelaxEyesTime = now.AddMinutes(sliderRelaxEyes.Value);
                 }
                 if (chkSitProperly.IsChecked == true && now >= nextSitProperlyTime)
                 {
-                    ShowNotification("Sit properly");
+                    ShowNotification("SitProperly");
                     nextSitProperlyTime = now.AddMinutes(sliderSitProperly.Value);
                 }
             }
+        }
+
+        private void ShowNotification(string resourceKey)
+        {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+            string message = loader.GetString($"{resourceKey}/Text");
+            if (string.IsNullOrEmpty(message))
+            {
+                message = resourceKey;
+            }
+
+            ToastTemplateType templateType = ToastTemplateType.ToastText01;
+            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(templateType);
+            var textNodes = toastXml.GetElementsByTagName("text");
+            textNodes[0].AppendChild(toastXml.CreateTextNode(message));
+            ToastNotification toast = new ToastNotification(toastXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
         private void ToggleReminders_Toggled(object sender, RoutedEventArgs e)
@@ -260,16 +271,6 @@ namespace beacon.BeaconApp.Pages.Home
             sliderStretchLegs.IsEnabled = overallEnabled && (chkStretchLegs.IsChecked == true);
             sliderRelaxEyes.IsEnabled = overallEnabled && (chkRelaxEyes.IsChecked == true);
             sliderSitProperly.IsEnabled = overallEnabled && (chkSitProperly.IsChecked == true);
-        }
-
-        private void ShowNotification(string message)
-        {
-            ToastTemplateType templateType = ToastTemplateType.ToastText01;
-            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(templateType);
-            var textNodes = toastXml.GetElementsByTagName("text");
-            textNodes[0].AppendChild(toastXml.CreateTextNode(message));
-            ToastNotification toast = new ToastNotification(toastXml);
-            ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
     }
 }

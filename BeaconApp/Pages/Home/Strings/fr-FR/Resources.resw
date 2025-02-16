@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GoToHome.Content" xml:space="preserve">
-    <value>frances otra vez</value>
+  <data name="DrinkWater.Text" xml:space="preserve">
+    <value>Boire de l'eau</value>
   </data>
-  <data name="SelectLanguage.Text" xml:space="preserve">
-    <value>ulala frances</value>
+  <data name="RelaxEyes.Text" xml:space="preserve">
+    <value>Détendez vos yeux</value>
+  </data>
+  <data name="SitProperly.Text" xml:space="preserve">
+    <value>Asseyez-vous bien</value>
+  </data>
+  <data name="StretchHands.Text" xml:space="preserve">
+    <value>Tends les mains</value>
+  </data>
+  <data name="StretchLegs.Text" xml:space="preserve">
+    <value>Étirez vos jambes</value>
   </data>
 </root>

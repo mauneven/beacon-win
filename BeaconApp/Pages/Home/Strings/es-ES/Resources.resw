@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GoToHome.Content" xml:space="preserve">
-    <value>Ir Al Inicio</value>
+  <data name="DrinkWater.Text" xml:space="preserve">
+    <value>Tomar agua</value>
   </data>
-  <data name="SelectLanguage.Text" xml:space="preserve">
-    <value>Seleccionar Idioma</value>
+  <data name="RelaxEyes.Text" xml:space="preserve">
+    <value>Relaja tus ojos</value>
+  </data>
+  <data name="SitProperly.Text" xml:space="preserve">
+    <value>Siéntate bien</value>
+  </data>
+  <data name="StretchHands.Text" xml:space="preserve">
+    <value>Estira tus manos</value>
+  </data>
+  <data name="StretchLegs.Text" xml:space="preserve">
+    <value>Estira tus piernas</value>
   </data>
 </root>
