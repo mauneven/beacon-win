@@ -67,4 +67,7 @@
   <ItemGroup>
     <PRIResource Include="BeaconApp\**\*.resw" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BeaconApp\Components\" />
+  </ItemGroup>
 </Project>

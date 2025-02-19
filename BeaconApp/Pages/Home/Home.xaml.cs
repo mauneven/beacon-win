@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Data.Xml.Dom;
@@ -10,11 +11,18 @@ namespace beacon.BeaconApp.Pages.Home
     public sealed partial class Home : Page
     {
         private DispatcherTimer timerCheckReminders;
-        private DateTime nextDrinkWaterTime;
-        DateTime nextStretchHandsTime;
-        DateTime nextStretchLegsTime;
-        DateTime nextRelaxEyesTime;
-        DateTime nextSitProperlyTime;
+        private List<Reminder> reminders;
+
+        private class Reminder
+        {
+            public Slider Slider { get; set; }
+            public TextBlock Label { get; set; }
+            public CheckBox CheckBox { get; set; }
+            public DateTime NextTime { get; set; }
+            public string SliderSettingKey { get; set; }
+            public string CheckSettingKey { get; set; }
+            public string ResourceKey { get; set; }
+        }
 
         public Home()
         {
@@ -26,121 +34,49 @@ namespace beacon.BeaconApp.Pages.Home
         {
             LoadSettings();
 
-            UpdateTimerInterval(sliderDrinkWater, textDrinkWater, null);
-            UpdateTimerInterval(sliderStretchHands, textStretchHands, null);
-            UpdateTimerInterval(sliderStretchLegs, textStretchLegs, null);
-            UpdateTimerInterval(sliderRelaxEyes, textRelaxEyes, null);
-            UpdateTimerInterval(sliderSitProperly, textSitProperly, null);
+            reminders = new List<Reminder>
+    {
+        new Reminder{ Slider = sliderDrinkWater, Label = textDrinkWater, CheckBox = chkDrinkWater, SliderSettingKey="sliderDrinkWater", CheckSettingKey="chkDrinkWater", ResourceKey="DrinkWater" },
+        new Reminder{ Slider = sliderStretchHands, Label = textStretchHands, CheckBox = chkStretchHands, SliderSettingKey="sliderStretchHands", CheckSettingKey="chkStretchHands", ResourceKey="StretchHands" },
+        new Reminder{ Slider = sliderStretchLegs, Label = textStretchLegs, CheckBox = chkStretchLegs, SliderSettingKey="sliderStretchLegs", CheckSettingKey="chkStretchLegs", ResourceKey="StretchLegs" },
+        new Reminder{ Slider = sliderRelaxEyes, Label = textRelaxEyes, CheckBox = chkRelaxEyes, SliderSettingKey="sliderRelaxEyes", CheckSettingKey="chkRelaxEyes", ResourceKey="RelaxEyes" },
+        new Reminder{ Slider = sliderSitProperly, Label = textSitProperly, CheckBox = chkSitProperly, SliderSettingKey="sliderSitProperly", CheckSettingKey="chkSitProperly", ResourceKey="SitProperly" }
+    };
 
-            sliderDrinkWater.ValueChanged += (s, ev) =>
+            foreach (var reminder in reminders)
             {
-                UpdateTimerInterval(sliderDrinkWater, textDrinkWater, null);
-                ApplicationData.Current.LocalSettings.Values["sliderDrinkWater"] = (int)sliderDrinkWater.Value;
-            };
+                UpdateReminder(reminder);
 
-            sliderStretchHands.ValueChanged += (s, ev) =>
-            {
-                UpdateTimerInterval(sliderStretchHands, textStretchHands, null);
-                ApplicationData.Current.LocalSettings.Values["sliderStretchHands"] = (int)sliderStretchHands.Value;
-            };
+                reminder.Slider.ValueChanged += (s, ev) =>
+                {
+                    UpdateReminder(reminder);
+                    ApplicationData.Current.LocalSettings.Values[reminder.SliderSettingKey] = (int)reminder.Slider.Value;
+                };
 
-            sliderStretchLegs.ValueChanged += (s, ev) =>
-            {
-                UpdateTimerInterval(sliderStretchLegs, textStretchLegs, null);
-                ApplicationData.Current.LocalSettings.Values["sliderStretchLegs"] = (int)sliderStretchLegs.Value;
-            };
+                reminder.CheckBox.Checked += (s, ev) =>
+                {
+                    reminder.Slider.IsEnabled = toggleReminders.IsOn;
+                    UpdateReminder(reminder);
+                    ApplicationData.Current.LocalSettings.Values[reminder.CheckSettingKey] = true;
+                };
 
-            sliderRelaxEyes.ValueChanged += (s, ev) =>
-            {
-                UpdateTimerInterval(sliderRelaxEyes, textRelaxEyes, null);
-                ApplicationData.Current.LocalSettings.Values["sliderRelaxEyes"] = (int)sliderRelaxEyes.Value;
-            };
+                reminder.CheckBox.Unchecked += (s, ev) =>
+                {
+                    reminder.Slider.IsEnabled = false;
+                    ApplicationData.Current.LocalSettings.Values[reminder.CheckSettingKey] = false;
+                };
+            }
 
-            sliderSitProperly.ValueChanged += (s, ev) =>
-            {
-                UpdateTimerInterval(sliderSitProperly, textSitProperly, null);
-                ApplicationData.Current.LocalSettings.Values["sliderSitProperly"] = (int)sliderSitProperly.Value;
-            };
-
-            chkDrinkWater.Checked += (s, ev) =>
-            {
-                if (toggleReminders.IsOn)
-                    sliderDrinkWater.IsEnabled = true;
-                ApplicationData.Current.LocalSettings.Values["chkDrinkWater"] = true;
-            };
-            chkDrinkWater.Unchecked += (s, ev) =>
-            {
-                sliderDrinkWater.IsEnabled = false;
-                ApplicationData.Current.LocalSettings.Values["chkDrinkWater"] = false;
-            };
-
-            chkStretchHands.Checked += (s, ev) =>
-            {
-                if (toggleReminders.IsOn)
-                    sliderStretchHands.IsEnabled = true;
-                ApplicationData.Current.LocalSettings.Values["chkStretchHands"] = true;
-            };
-            chkStretchHands.Unchecked += (s, ev) =>
-            {
-                sliderStretchHands.IsEnabled = false;
-                ApplicationData.Current.LocalSettings.Values["chkStretchHands"] = false;
-            };
-
-            chkStretchLegs.Checked += (s, ev) =>
-            {
-                if (toggleReminders.IsOn)
-                    sliderStretchLegs.IsEnabled = true;
-                ApplicationData.Current.LocalSettings.Values["chkStretchLegs"] = true;
-            };
-            chkStretchLegs.Unchecked += (s, ev) =>
-            {
-                sliderStretchLegs.IsEnabled = false;
-                ApplicationData.Current.LocalSettings.Values["chkStretchLegs"] = false;
-            };
-
-            chkRelaxEyes.Checked += (s, ev) =>
-            {
-                if (toggleReminders.IsOn)
-                    sliderRelaxEyes.IsEnabled = true;
-                ApplicationData.Current.LocalSettings.Values["chkRelaxEyes"] = true;
-            };
-            chkRelaxEyes.Unchecked += (s, ev) =>
-            {
-                sliderRelaxEyes.IsEnabled = false;
-                ApplicationData.Current.LocalSettings.Values["chkRelaxEyes"] = false;
-            };
-
-            chkSitProperly.Checked += (s, ev) =>
-            {
-                if (toggleReminders.IsOn)
-                    sliderSitProperly.IsEnabled = true;
-                ApplicationData.Current.LocalSettings.Values["chkSitProperly"] = true;
-            };
-            chkSitProperly.Unchecked += (s, ev) =>
-            {
-                sliderSitProperly.IsEnabled = false;
-                ApplicationData.Current.LocalSettings.Values["chkSitProperly"] = false;
-            };
-
-            sliderDrinkWater.IsEnabled = toggleReminders.IsOn && (chkDrinkWater.IsChecked == true);
-            sliderStretchHands.IsEnabled = toggleReminders.IsOn && (chkStretchHands.IsChecked == true);
-            sliderStretchLegs.IsEnabled = toggleReminders.IsOn && (chkStretchLegs.IsChecked == true);
-            sliderRelaxEyes.IsEnabled = toggleReminders.IsOn && (chkRelaxEyes.IsChecked == true);
-            sliderSitProperly.IsEnabled = toggleReminders.IsOn && (chkSitProperly.IsChecked == true);
-
-            chkDrinkWater.IsEnabled = toggleReminders.IsOn;
-            chkStretchHands.IsEnabled = toggleReminders.IsOn;
-            chkStretchLegs.IsEnabled = toggleReminders.IsOn;
-            chkRelaxEyes.IsEnabled = toggleReminders.IsOn;
-            chkSitProperly.IsEnabled = toggleReminders.IsOn;
-
+            toggleReminders.Toggled += ToggleReminders_Toggled;
             ToggleReminders_Toggled(toggleReminders, null);
+
             StartTimers();
         }
 
         private void LoadSettings()
         {
             var localSettings = ApplicationData.Current.LocalSettings;
+
             if (localSettings.Values["sliderDrinkWater"] != null)
                 sliderDrinkWater.Value = Convert.ToDouble(localSettings.Values["sliderDrinkWater"]);
             if (localSettings.Values["sliderStretchHands"] != null)
@@ -174,35 +110,22 @@ namespace beacon.BeaconApp.Pages.Home
             this.Frame.Navigate(typeof(beacon.BeaconApp.Pages.Settings.Settings));
         }
 
-        private void UpdateTimerInterval(Slider slider, TextBlock label, DispatcherTimer timer)
+        private void UpdateReminder(Reminder reminder)
         {
-            int minutes = (int)slider.Value;
-            label.Text = $"{minutes} min";
-
-            if (slider == sliderDrinkWater)
-                nextDrinkWaterTime = DateTime.Now.AddMinutes(minutes);
-            else if (slider == sliderStretchHands)
-                nextStretchHandsTime = DateTime.Now.AddMinutes(minutes);
-            else if (slider == sliderStretchLegs)
-                nextStretchLegsTime = DateTime.Now.AddMinutes(minutes);
-            else if (slider == sliderRelaxEyes)
-                nextRelaxEyesTime = DateTime.Now.AddMinutes(minutes);
-            else if (slider == sliderSitProperly)
-                nextSitProperlyTime = DateTime.Now.AddMinutes(minutes);
+            int minutes = (int)reminder.Slider.Value;
+            reminder.Label.Text = $"{minutes} min";
+            reminder.NextTime = minutes >= 1 ? DateTime.Now.AddMinutes(minutes) : DateTime.MaxValue;
         }
 
         private void StartTimers()
         {
-            nextDrinkWaterTime = DateTime.Now.AddMinutes(sliderDrinkWater.Value);
-            nextStretchHandsTime = DateTime.Now.AddMinutes(sliderStretchHands.Value);
-            nextStretchLegsTime = DateTime.Now.AddMinutes(sliderStretchLegs.Value);
-            nextRelaxEyesTime = DateTime.Now.AddMinutes(sliderRelaxEyes.Value);
-            nextSitProperlyTime = DateTime.Now.AddMinutes(sliderSitProperly.Value);
-
-            timerCheckReminders = new DispatcherTimer
+            foreach (var reminder in reminders)
             {
-                Interval = TimeSpan.FromSeconds(1)
-            };
+                reminder.NextTime = (int)reminder.Slider.Value >= 1
+                                        ? DateTime.Now.AddMinutes(reminder.Slider.Value)
+                                        : DateTime.MaxValue;
+            }
+            timerCheckReminders = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timerCheckReminders.Tick += TimerCheckReminders_Tick;
             timerCheckReminders.Start();
         }
@@ -212,30 +135,15 @@ namespace beacon.BeaconApp.Pages.Home
             var now = DateTime.Now;
             if (toggleReminders.IsOn)
             {
-                if (chkDrinkWater.IsChecked == true && now >= nextDrinkWaterTime)
+                foreach (var reminder in reminders)
                 {
-                    ShowNotification("DrinkWater");
-                    nextDrinkWaterTime = now.AddMinutes(sliderDrinkWater.Value);
-                }
-                if (chkStretchHands.IsChecked == true && now >= nextStretchHandsTime)
-                {
-                    ShowNotification("StretchHands");
-                    nextStretchHandsTime = now.AddMinutes(sliderStretchHands.Value);
-                }
-                if (chkStretchLegs.IsChecked == true && now >= nextStretchLegsTime)
-                {
-                    ShowNotification("StretchLegs");
-                    nextStretchLegsTime = now.AddMinutes(sliderStretchLegs.Value);
-                }
-                if (chkRelaxEyes.IsChecked == true && now >= nextRelaxEyesTime)
-                {
-                    ShowNotification("RelaxEyes");
-                    nextRelaxEyesTime = now.AddMinutes(sliderRelaxEyes.Value);
-                }
-                if (chkSitProperly.IsChecked == true && now >= nextSitProperlyTime)
-                {
-                    ShowNotification("SitProperly");
-                    nextSitProperlyTime = now.AddMinutes(sliderSitProperly.Value);
+                    if (reminder.CheckBox.IsChecked == true && now >= reminder.NextTime)
+                    {
+                        ShowNotification(reminder.ResourceKey);
+                        reminder.NextTime = (int)reminder.Slider.Value >= 1
+                                                ? now.AddMinutes(reminder.Slider.Value)
+                                                : DateTime.MaxValue;
+                    }
                 }
             }
         }
@@ -245,9 +153,7 @@ namespace beacon.BeaconApp.Pages.Home
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             string message = loader.GetString($"{resourceKey}/Text");
             if (string.IsNullOrEmpty(message))
-            {
                 message = resourceKey;
-            }
 
             ToastTemplateType templateType = ToastTemplateType.ToastText01;
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(templateType);
@@ -259,18 +165,32 @@ namespace beacon.BeaconApp.Pages.Home
 
         private void ToggleReminders_Toggled(object sender, RoutedEventArgs e)
         {
+            if (toggleReminders == null)
+                return;
+
             bool overallEnabled = toggleReminders.IsOn;
             ApplicationData.Current.LocalSettings.Values["toggleReminders"] = overallEnabled;
-            chkDrinkWater.IsEnabled = overallEnabled;
-            chkStretchHands.IsEnabled = overallEnabled;
-            chkStretchLegs.IsEnabled = overallEnabled;
-            chkRelaxEyes.IsEnabled = overallEnabled;
-            chkSitProperly.IsEnabled = overallEnabled;
-            sliderDrinkWater.IsEnabled = overallEnabled && (chkDrinkWater.IsChecked == true);
-            sliderStretchHands.IsEnabled = overallEnabled && (chkStretchHands.IsChecked == true);
-            sliderStretchLegs.IsEnabled = overallEnabled && (chkStretchLegs.IsChecked == true);
-            sliderRelaxEyes.IsEnabled = overallEnabled && (chkRelaxEyes.IsChecked == true);
-            sliderSitProperly.IsEnabled = overallEnabled && (chkSitProperly.IsChecked == true);
+
+            if (reminders == null)
+                return;
+
+            foreach (var reminder in reminders)
+            {
+                if (reminder?.CheckBox != null)
+                {
+                    reminder.CheckBox.IsEnabled = overallEnabled;
+                    if (reminder.Slider != null)
+                    {
+                        reminder.Slider.IsEnabled = overallEnabled && (reminder.CheckBox.IsChecked == true);
+                        if (overallEnabled && reminder.CheckBox.IsChecked == true)
+                        {
+                            reminder.NextTime = (int)reminder.Slider.Value >= 1
+                                ? DateTime.Now.AddMinutes(reminder.Slider.Value)
+                                : DateTime.MaxValue;
+                        }
+                    }
+                }
+            }
         }
     }
 }

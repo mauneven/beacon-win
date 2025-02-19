@@ -8,15 +8,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
-        <TextBlock x:Uid="SelectLanguage" FontSize="20" />
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+        <TextBlock x:Uid="SelectLanguage" FontSize="20"/>
 
-        <!-- Language selection buttons -->
-        <Button Content="English" Tag="en-US" Click="ChangeLanguage_Click"/>
-        <Button Content="Español" Tag="es-ES" Click="ChangeLanguage_Click"/>
-        <Button Content="Français" Tag="fr-FR" Click="ChangeLanguage_Click"/>
+        <ComboBox x:Name="languageComboBox" SelectedValuePath="currentLanguage" SelectionChanged="LanguageComboBox_SelectionChanged">
+            <ComboBoxItem Content="English" Tag="en-US"/>
+            <ComboBoxItem Content="Español" Tag="es-ES"/>
+            <ComboBoxItem Content="Français" Tag="fr-FR"/>
+        </ComboBox>
 
-        <!-- Navigation button to Main or Home -->
-        <Button x:Uid="GoToHome" Click="GoToMain_Click"/>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+            <TextBlock x:Uid="OnStartup" VerticalAlignment="Center"/>
+            <ToggleSwitch x:Name="toggleLaunchMinimized" OffContent="" OnContent="" Toggled="ToggleLaunchMinimized_Toggled"/>
+        </StackPanel>
+
+        <Button x:Uid="GoBackToHome" Click="GoToMain_Click"/>
     </StackPanel>
 </Page>
