@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
-using System;
+using Windows.Storage;
 
 namespace beacon
 {
@@ -7,6 +7,7 @@ namespace beacon
     {
         private Window? m_window;
         public static MainWindow? CurrentMainWindow { get; private set; }
+        public static TrayIconManager? TrayIconManagerInstance { get; private set; }
 
         public App()
         {
@@ -18,7 +19,21 @@ namespace beacon
             m_window = new MainWindow();
             m_window.ExtendsContentIntoTitleBar = true;
             CurrentMainWindow = m_window as MainWindow;
-            m_window.Activate();
+
+            TrayIconManagerInstance = new TrayIconManager(m_window);
+
+            bool launchMinimized = false;
+            if (ApplicationData.Current.LocalSettings.Values["LaunchMinimized"] is bool setting)
+            {
+                launchMinimized = setting;
+            }
+
+            // Si no se recibió ningún argumento, se asume un lanzamiento manual
+            bool isManualLaunch = string.IsNullOrEmpty(args.Arguments);
+            if (!launchMinimized || isManualLaunch)
+            {
+                m_window.Activate();
+            }
         }
     }
 }
