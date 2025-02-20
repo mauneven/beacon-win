@@ -12,13 +12,14 @@ namespace beacon.BeaconApp.Pages.Home
     {
         private DispatcherTimer timerCheckReminders;
         private List<Reminder> reminders;
+        private int _counter;
 
         private class Reminder
         {
             public Slider Slider { get; set; }
             public TextBlock Label { get; set; }
             public CheckBox CheckBox { get; set; }
-            public DateTime NextTime { get; set; }
+            public int NextTimeSeconds { get; set; }
             public string SliderSettingKey { get; set; }
             public string CheckSettingKey { get; set; }
             public string ResourceKey { get; set; }
@@ -35,13 +36,13 @@ namespace beacon.BeaconApp.Pages.Home
             LoadSettings();
 
             reminders = new List<Reminder>
-    {
-        new Reminder{ Slider = sliderDrinkWater, Label = textDrinkWater, CheckBox = chkDrinkWater, SliderSettingKey="sliderDrinkWater", CheckSettingKey="chkDrinkWater", ResourceKey="DrinkWater" },
-        new Reminder{ Slider = sliderStretchHands, Label = textStretchHands, CheckBox = chkStretchHands, SliderSettingKey="sliderStretchHands", CheckSettingKey="chkStretchHands", ResourceKey="StretchHands" },
-        new Reminder{ Slider = sliderStretchLegs, Label = textStretchLegs, CheckBox = chkStretchLegs, SliderSettingKey="sliderStretchLegs", CheckSettingKey="chkStretchLegs", ResourceKey="StretchLegs" },
-        new Reminder{ Slider = sliderRelaxEyes, Label = textRelaxEyes, CheckBox = chkRelaxEyes, SliderSettingKey="sliderRelaxEyes", CheckSettingKey="chkRelaxEyes", ResourceKey="RelaxEyes" },
-        new Reminder{ Slider = sliderSitProperly, Label = textSitProperly, CheckBox = chkSitProperly, SliderSettingKey="sliderSitProperly", CheckSettingKey="chkSitProperly", ResourceKey="SitProperly" }
-    };
+            {
+                new Reminder{ Slider = sliderDrinkWater, Label = textDrinkWater, CheckBox = chkDrinkWater, SliderSettingKey="sliderDrinkWater", CheckSettingKey="chkDrinkWater", ResourceKey="DrinkWater" },
+                new Reminder{ Slider = sliderStretchHands, Label = textStretchHands, CheckBox = chkStretchHands, SliderSettingKey="sliderStretchHands", CheckSettingKey="chkStretchHands", ResourceKey="StretchHands" },
+                new Reminder{ Slider = sliderStretchLegs, Label = textStretchLegs, CheckBox = chkStretchLegs, SliderSettingKey="sliderStretchLegs", CheckSettingKey="chkStretchLegs", ResourceKey="StretchLegs" },
+                new Reminder{ Slider = sliderRelaxEyes, Label = textRelaxEyes, CheckBox = chkRelaxEyes, SliderSettingKey="sliderRelaxEyes", CheckSettingKey="chkRelaxEyes", ResourceKey="RelaxEyes" },
+                new Reminder{ Slider = sliderSitProperly, Label = textSitProperly, CheckBox = chkSitProperly, SliderSettingKey="sliderSitProperly", CheckSettingKey="chkSitProperly", ResourceKey="SitProperly" }
+            };
 
             foreach (var reminder in reminders)
             {
@@ -114,16 +115,16 @@ namespace beacon.BeaconApp.Pages.Home
         {
             int minutes = (int)reminder.Slider.Value;
             reminder.Label.Text = $"{minutes} min";
-            reminder.NextTime = minutes >= 1 ? DateTime.Now.AddMinutes(minutes) : DateTime.MaxValue;
+            reminder.NextTimeSeconds = _counter + (minutes >= 1 ? minutes * 60 : int.MaxValue);
         }
 
         private void StartTimers()
         {
+            _counter = 0;
             foreach (var reminder in reminders)
             {
-                reminder.NextTime = (int)reminder.Slider.Value >= 1
-                                        ? DateTime.Now.AddMinutes(reminder.Slider.Value)
-                                        : DateTime.MaxValue;
+                int minutes = (int)reminder.Slider.Value;
+                reminder.NextTimeSeconds = minutes >= 1 ? _counter + minutes * 60 : int.MaxValue;
             }
             timerCheckReminders = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timerCheckReminders.Tick += TimerCheckReminders_Tick;
@@ -132,17 +133,16 @@ namespace beacon.BeaconApp.Pages.Home
 
         private void TimerCheckReminders_Tick(object sender, object e)
         {
-            var now = DateTime.Now;
+            _counter++;
             if (toggleReminders.IsOn)
             {
                 foreach (var reminder in reminders)
                 {
-                    if (reminder.CheckBox.IsChecked == true && now >= reminder.NextTime)
+                    if (reminder.CheckBox.IsChecked == true && _counter >= reminder.NextTimeSeconds)
                     {
                         ShowNotification(reminder.ResourceKey);
-                        reminder.NextTime = (int)reminder.Slider.Value >= 1
-                                                ? now.AddMinutes(reminder.Slider.Value)
-                                                : DateTime.MaxValue;
+                        int minutes = (int)reminder.Slider.Value;
+                        reminder.NextTimeSeconds = minutes >= 1 ? _counter + minutes * 60 : int.MaxValue;
                     }
                 }
             }
@@ -184,9 +184,8 @@ namespace beacon.BeaconApp.Pages.Home
                         reminder.Slider.IsEnabled = overallEnabled && (reminder.CheckBox.IsChecked == true);
                         if (overallEnabled && reminder.CheckBox.IsChecked == true)
                         {
-                            reminder.NextTime = (int)reminder.Slider.Value >= 1
-                                ? DateTime.Now.AddMinutes(reminder.Slider.Value)
-                                : DateTime.MaxValue;
+                            int minutes = (int)reminder.Slider.Value;
+                            reminder.NextTimeSeconds = _counter + minutes * 60;
                         }
                     }
                 }
