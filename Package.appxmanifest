@@ -9,10 +9,10 @@
 
   <Identity
     Name="mauneven.BeaconReminders"
-    Publisher="CN=mauneven"
-    Version="1.0.2.0" />
+    Publisher="CN=4F8BC4C4-B921-4352-9066-F624ADB45F66"
+    Version="1.0.4.0" />
 
-  <mp:PhoneIdentity PhoneProductId="cf38574b-48b4-4e7f-a584-3123509383bc" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="5558f287-aed1-44d2-8939-db627f7f5aa2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Beacon Reminders</DisplayName>
