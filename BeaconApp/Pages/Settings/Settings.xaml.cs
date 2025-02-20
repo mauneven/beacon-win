@@ -72,7 +72,7 @@ namespace beacon.BeaconApp.Pages.Settings
                 if (selectedItem == _previousSelectedItem)
                     return;
 
-                string langTag = selectedItem.Tag as string;
+                string? langTag = selectedItem.Tag as string;
 
                 var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
                 string dialogTitle = loader.GetString("ChangeLangTitle");

@@ -63,11 +63,33 @@
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
     <PriResourcesRoot>BeaconApp\</PriResourcesRoot>
+    <AssemblyName>beacon</AssemblyName>
+    <ApplicationIcon>Assets\beacon.ico</ApplicationIcon>
+    <Title>Beacon Reminders</Title>
+    <Authors>Mauneven</Authors>
+    <Description>Stay productive and healthy with Beacon Reminders</Description>
+    <Copyright>https://github.com/mauneven/beacon-win?tab=GPL-3.0-1-ov-file</Copyright>
+    <PackageProjectUrl>https://github.com/mauneven/beacon-win</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mauneven/beacon-win</RepositoryUrl>
+    <PackageIcon>beacon.png</PackageIcon>
+    <PackageTags>productivity, health, reminders</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
   </PropertyGroup>
   <ItemGroup>
     <PRIResource Include="BeaconApp\**\*.resw" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BeaconApp\Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\beacon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>

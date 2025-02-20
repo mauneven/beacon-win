@@ -132,7 +132,13 @@
   <data name="GoBackToHome.Content" xml:space="preserve">
     <value>Volver al Inicio</value>
   </data>
+  <data name="Language.Text" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
   <data name="OnStartup.Text" xml:space="preserve">
-    <value>Lanzar al inicio</value>
+    <value>Lanzar Beacon al inicio</value>
+  </data>
+  <data name="WindowsStartup.Text" xml:space="preserve">
+    <value>Al iniciar</value>
   </data>
 </root>

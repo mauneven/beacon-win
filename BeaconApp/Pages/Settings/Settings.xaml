@@ -9,19 +9,26 @@
     mc:Ignorable="d">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
-        <TextBlock x:Uid="SelectLanguage" FontSize="20"/>
-
-        <ComboBox x:Name="languageComboBox" SelectedValuePath="currentLanguage" SelectionChanged="LanguageComboBox_SelectionChanged">
+        <TextBlock x:Uid="Language" FontSize="18"/>
+        <ComboBox x:Name="languageComboBox" SelectionChanged="LanguageComboBox_SelectionChanged" Width="200">
             <ComboBoxItem Content="English" Tag="en-US"/>
             <ComboBoxItem Content="Español" Tag="es-ES"/>
             <ComboBoxItem Content="Français" Tag="fr-FR"/>
         </ComboBox>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
-            <TextBlock x:Uid="OnStartup" VerticalAlignment="Center"/>
-            <ToggleSwitch x:Name="toggleLaunchMinimized" OffContent="" OnContent="" Toggled="ToggleLaunchMinimized_Toggled"/>
-        </StackPanel>
-
+        <TextBlock x:Uid="WindowsStartup" FontSize="18"/>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="On Startup" VerticalAlignment="Center" Margin="0,0,20,0"/>
+            <ToggleSwitch x:Name="toggleLaunchMinimized" OnContent="" OffContent="" Grid.Column="1" Toggled="ToggleLaunchMinimized_Toggled"                 HorizontalAlignment="Right"
+                VerticalAlignment="Center"/>
+        </Grid>
+        <Rectangle Height="0.5" Width="auto"
+           Stroke="Gray" StrokeThickness="0.2"
+           RadiusY="0" RadiusX="0"/>
         <Button x:Uid="GoBackToHome" Click="GoToMain_Click"/>
     </StackPanel>
 </Page>

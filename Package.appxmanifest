@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="965bd327-aaa5-4556-9f57-34a55dfe42b1"
-    Publisher="CN=Maune"
+    Name="mauneven.BeaconReminders"
+    Publisher="CN=4F8BC4C4-B921-4352-9066-F624ADB45F66"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="965bd327-aaa5-4556-9f57-34a55dfe42b1" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="cf38574b-48b4-4e7f-a584-3123509383bc" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>beacon</DisplayName>
-    <PublisherDisplayName>Maune</PublisherDisplayName>
+    <DisplayName>Beacon Reminders</DisplayName>
+    <PublisherDisplayName>mauneven</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -36,7 +36,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="beacon"
+        DisplayName="Beacon Reminders"
         Description="beacon"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
