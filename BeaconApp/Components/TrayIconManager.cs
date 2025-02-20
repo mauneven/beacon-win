@@ -96,7 +96,7 @@ namespace beacon
             _iconData.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
             _iconData.uCallbackMessage = WM_APP + 1;
             _iconData.szTip = "Beacon App";
-            _iconData.hIcon = LoadIcon("C:\\Users\\Maune\\OneDrive\\Documents\\code\\beacon\\Assets\\beacon.ico");
+            _iconData.hIcon = LoadIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "beacon.ico"));
 
             _iconAdded = Shell_NotifyIcon(NIM_ADD, ref _iconData);
         }
