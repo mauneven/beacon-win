@@ -1,0 +1,29 @@
+﻿Privacy Policy for Beacon Reminders
+Last updated: 02/21/2025
+
+Introduction
+Thank you for using Beacon Reminders! Your privacy is important to me. This Privacy Policy explains how we handle your data and ensures transparency in how our app operates.
+
+No Data Collection or Sharing
+Beacon Reminders is designed with privacy in mind. The app does not collect, store, transmit, or share any personal data. Your usage remains completely local to your device, and no information is ever sent over the internet.
+
+What Data Does Beacon Reminders Store?
+The only information stored by Beacon Reminders is:
+
+Notification intervals that you set within the app.
+This data is saved locally on your device and is only accessible by you. It is not shared, uploaded, or transmitted to any external servers or third parties.
+
+No Internet Connection Required
+Beacon Reminders functions entirely offline. It does not connect to the internet, cloud services, or any remote servers. The app works locally on your computer without any need for an online connection.
+
+Open Source Transparency
+Beacon Reminders is an open-source application. This means that anyone can review the code to verify that it operates exactly as described, with no hidden data collection or tracking mechanisms.
+
+Your Control and Security
+Since Beacon Reminders runs locally and does not transmit data, your settings and stored information remain fully under your control. No one can access your notification preferences unless they have physical access to your computer.
+
+Changes to This Privacy Policy
+While the core principles of privacy in Beacon Reminders will never change, this policy may be updated for clarity or legal compliance. If any changes are made, they will be reflected in this document with an updated date at the top.
+
+Contact
+If you have any questions about this Privacy Policy, feel free to contact me at: mauneven@gmail.com
