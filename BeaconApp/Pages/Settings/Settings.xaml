@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="On Startup" VerticalAlignment="Center" Margin="0,0,20,0"/>
+            <TextBlock x:Uid="OnStartup" VerticalAlignment="Center" Margin="0,0,20,0"/>
             <ToggleSwitch x:Name="toggleLaunchMinimized" OnContent="" OffContent="" Grid.Column="1" Toggled="ToggleLaunchMinimized_Toggled"                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"/>
         </Grid>
